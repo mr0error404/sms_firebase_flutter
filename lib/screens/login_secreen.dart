@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 enum MobileVerificatonState {
@@ -12,9 +13,13 @@ class LoginSecreen extends StatefulWidget {
 }
 
 class _LoginSecreenState extends State<LoginSecreen> {
-  final currentState = MobileVerificatonState.SHOW_MOBILE_FROM_STATE;
+  MobileVerificatonState currentState = MobileVerificatonState.SHOW_MOBILE_FROM_STATE;
   final phoneController = TextEditingController();
   final otpController = TextEditingController();
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  var verificationId;
+  bool showLoading = false;
+
   getMobileFromWidget(context){
     return  Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -34,7 +39,34 @@ class _LoginSecreenState extends State<LoginSecreen> {
             height: 20,
           ),
           MaterialButton(
-              onPressed: (){},
+              onPressed: ()async{
+                setState((){
+                  showLoading =true;
+                });
+               await _auth.verifyPhoneNumber(
+                   phoneNumber: phoneController.text,
+                   verificationCompleted: (phoneAuthCredential)async{
+                     setState((){
+                       showLoading =false;
+                     });
+                   },
+                    verificationFailed: (verificationFailed)async{
+                      setState((){
+                        showLoading =false;
+                      });
+                      _scaffoldKey.currentState?.showSnackBar(content : Text(verificationFailed.message));
+                    },
+                    codeSent: (verificationId , resendingToken)async{
+                     setState((){
+                       showLoading = false;
+                       currentState = MobileVerificatonState.SHOW_MOBILE_FROM_STATE;
+                       this.verificationId=verificationId;
+                     });
+                    },
+                    codeAutoRetrievalTimeout: (verificationId)async{
+
+                    });
+                },
               child: Text("SEND",),
               color: Colors.lightBlue,
               textColor: Colors.white,
@@ -51,7 +83,7 @@ class _LoginSecreenState extends State<LoginSecreen> {
           child: TextFormField(
             controller:otpController,
             decoration: InputDecoration(
-              labelText: "OTP Number ",
+              labelText: "Enter OTP ",
               icon: Icon(Icons.phone,),
               // hintText: "Phone Number ",
             ),
@@ -69,11 +101,12 @@ class _LoginSecreenState extends State<LoginSecreen> {
       ],
     );
   }
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
       body: Container(
-        child: currentState == MobileVerificatonState.SHOW_MOBILE_FROM_STATE
+        child: showLoading ? Center(child: CircularProgressIndicator(),) : currentState == MobileVerificatonState.SHOW_MOBILE_FROM_STATE
             ? getMobileFromWidget(context) : getOtpFromWidget(context),
         padding: const EdgeInsets.all(16),
       ),

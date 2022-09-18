@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "47784725860",
+    "project_id": "arthu-b7b31",
+    "storage_bucket": "arthu-b7b31.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:47784725860:android:0e35efd6f418ae507bfe71",
+        "android_client_info": {
+          "package_name": "com.example.sms_firebase_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "47784725860-8cjjci46a3qqa6f1cg3e6ahksj0nf8og.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRFKB9PQyEHIHNOpMqCI1QuRhbL-RLij0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "47784725860-8cjjci46a3qqa6f1cg3e6ahksj0nf8og.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
